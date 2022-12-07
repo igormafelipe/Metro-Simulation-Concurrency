@@ -1,0 +1,11 @@
+{
+  "lines": {
+    "red": ["Davis", "Harvard", "Kendall", "Park", "Downtown Crossing", "South Station", "Broadway", "Andrew", "JFK"]
+},
+  "trips": {
+    "Bob": [ "Park", "Broadway" ],
+    "Alice": [ "Broadway", "South Station" ],
+    "David": [ "Harvard", "Davis" ],
+    "Carol": [ "Downtown Crossing", "Broadway" ]
+  }
+}
