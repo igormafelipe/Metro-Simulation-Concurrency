@@ -2,9 +2,9 @@
 A metro simulator where metros work in concurrency. Passenger can board and unboard, and metros move in specific paths. Simulation ends once all passengers have reached their destination.
 
 # Multi Thread Design
-Locks are on stations. Each station has two locks, one for passengers and one for trains. These locks are reentrant locks, therefore they also have conditions. There are two conditions, one for trains and one for passengers.
+Locks are based on stations. Each station has two locks, one for passengers and one for trains. These locks are reentrant locks with special conditions.
 
-A train first attemps to acquire the lock of the next station it will move to. While the next station is occupied, this train will await. Once the next station is freed, the current train will acquire the lock of the current station it is at, and the lock of the passengers in the next station it will move to. It will then move to the next station. After moving, it will signall all passengers in the next station to awake, then all trains trying to get to the next station will also awake (these will not be able to move, however, because the station is occupied. They will have to wait until the station is empty), and will notify all trains trying to get to the station the train just left that the station is empty.
+To better undesrtand this, let's run through an example. Train T wants to move from station A to station B. T attemps to move to B, thus it must acquire the train lock of B, but B is already occupied. This will cause T to wait until B is empty, i.e it's train lock is freed. Once the next station train lock is freed, T will free the train lock of A, acquire the train lock of B as well as the passenger lock of B. It will then move to B. After moving, it will signall all passengers in B to awake, then all trains trying to get to the next station will also awake (these will not be able to move, however, because the station is occupied. They will have to wait until the station is empty), and will notify all trains trying to get to the station the train just left that the station is empty.
 
 The passengers work as follows:
 
